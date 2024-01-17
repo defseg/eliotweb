@@ -1,5 +1,5 @@
 
-var fs = require('fs').promises;
+const fs = await import('fs');
 
 async function readFile(filePath) {
   try {
