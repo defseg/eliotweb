@@ -1,9 +1,9 @@
 
-import * as fs from 'node:fs/promises';
+const fs = require('fs')
 
 async function readMyFile(filePath) {
   try {
-    const data = await fs.readFile(filePath);
+    const data = fs.readFile(filePath);
     let whichDiv = document.getElementById("myText");
     whichDiv.innerHTML = data;
     console.log(data);
