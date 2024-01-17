@@ -1,0 +1,2 @@
+[start]
+cmd = 'py -m http.server'
