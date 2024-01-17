@@ -25,7 +25,11 @@ async function getBooks() {
     return allBooks;
 }
 
-getBooks().then((data) => console.log("books are:", data))
+getBooks().then((querySnap) => {
+    console.log("num of docs:", querySnap.size);
+    querySnap.docs.forEach((docSnap, index) => console.log(`doc #${index}:`, docSnap.data()));
+  });
+
 /*
 //Put this in a module
 function cleanDiacritics(word) {
