@@ -564,11 +564,11 @@ function getHapaxMode(myParams) {
 }
 
 function useEdition(editionLabel, myParams, paramLabel) {
-    let useEdition = document.getElementById(editionLabel).checked;
-    if (useEdition) {
-        myParams.append(paramLabel, useEdition);
+    let canUseEdition = document.getElementById(editionLabel).checked;
+    if (canUseEdition) {
+        myParams.append(paramLabel, canUseEdition);
     }
-    return useEdition;
+    return canUseEdition;
 }
 
 function searchInfoGetter(myParams) {
@@ -590,13 +590,13 @@ function searchInfoGetter(myParams) {
     searchDict["useGrebrew"] = useEdition("useGrebrew", myParams, "showGrebrew");
 
     if (bookPick == "Psalms (prose)" || bookPick == "John") {
-        searchDict["useMayhew"] = useEdition(searchDict, "useMayhew", myParams, "showMayhew");
+        searchDict["useMayhew"] = useEdition("useMayhew", myParams, "showMayhew");
     } else {
         searchDict["useMayhew"] = false;
     }
 
     if (bookPick == "Genesis") {
-        searchDict["useZeroth"] = useEdition(searchDict, "useZeroth", myParams, "showZerothEd");
+        searchDict["useZeroth"] = useEdition("useZeroth", myParams, "showZerothEd");
     } else {
         searchDict["useZeroth"] = false;
     }
