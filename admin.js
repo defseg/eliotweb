@@ -1,5 +1,5 @@
 
-const fs = require('fs')
+const mariadb = require('mariadb');
 
 async function readMyFile(filePath) {
   try {
