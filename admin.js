@@ -27,19 +27,26 @@ async function getBooks() {
 
 async function createBook(bookName) {
     await setDoc(doc(db, "books", bookName), {
-        name: bookName
+        name: bookName,
+        title: bookName
+    });
+}
+
+async function bookUpdate() {
+    getBooks().then((querySnap) => {
+        console.log("num of docs:", querySnap.size);
+        querySnap.docs.forEach((docSnap, index) => console.log(`doc #${index}:`, docSnap.data()));
     });
 }
 
 document.getElementById("writeString").addEventListener("click", () => {
     let newBook = document.getElementById("sampleString").value;
     createBook(newBook);
+    bookUpdate();
 });
 
-getBooks().then((querySnap) => {
-    console.log("num of docs:", querySnap.size);
-    querySnap.docs.forEach((docSnap, index) => console.log(`doc #${index}:`, docSnap.data()));
-  });
+
+
 
 /*
 //Put this in a module
