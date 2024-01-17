@@ -299,6 +299,11 @@ const NTBookList = [
     "Revelation"
 ];
 
+var bookDropdown = document.getElementById("bookSelectionDropdown");
+var blankBookOption = document.createElement("option");
+blankBookOption.text = "";
+bookDropdown.add(blankBookOption);
+
 function updateChapterDropdown(whichBook) {
     var chapterDropdown = document.getElementById("chapterSelectionDropdown");
     chapterDropdown.innerHTML = "";
@@ -309,7 +314,6 @@ function updateChapterDropdown(whichBook) {
     }
 }
 
-var bookDropdown = document.getElementById("bookSelectionDropdown");
 for (var i = 0; i < deployedBookList.length; i++) {
     var option = document.createElement("option");
     option.text = deployedBookList[i];
@@ -319,6 +323,15 @@ for (var i = 0; i < deployedBookList.length; i++) {
 
 bookDropdown.addEventListener("change", function() {
     updateChapterDropdown(bookDropdown.value);
+    //possibly a bit of a kludge
+    if (! bookDropdown.value == "") {
+        document.getElementById("chapterSelectionLegend").hidden = false;
+        document.getElementById("chapterSelectionDropdown").hidden = false;
+    } else {
+        document.getElementById("chapterSelectionLegend").hidden = true;
+        document.getElementById("chapterSelectionDropdown").hidden = true;
+    }
+    
     if (bookDropdown.value == "Psalms (prose)" || bookDropdown.value == "John") {
         var useMayhew = document.createElement("input");
         const label = document.createElement("label");
@@ -798,7 +811,6 @@ document.getElementById("submitBookQuery").addEventListener("click", function() 
     var myChapter = searchInfo["chapter"];
     var lastChapter = searchInfo["lastChapter"];
     
-
     var allColumnMeasures = populateHeaders(searchInfo);
     
     var hapaxMode = getHapaxMode(params);
