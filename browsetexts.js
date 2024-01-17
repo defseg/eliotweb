@@ -20,16 +20,81 @@ const requestListener = function (req, res) {
 };
 */
 
-const allBookList = [
-    //"Genesis",
+const deployedBookList = [
     "Exodus",
     "Leviticus",
-    /*"Numbers",
+    "Matthew",
+    "Mark",
+    "Luke",
+    "John",
+    "Acts",
+    "Romans",
+    "1 Corinthians",
+    "2 Corinthians",
+    "Galatians",
+    "Ephesians",
+    "Philippians",
+    "Colossians",
+    "1 Thessalonians",
+    "2 Thessalonians",
+    "1 Timothy",
+    "2 Timothy",
+    "Titus",
+    "Philemon",
+    "Hebrews",
+    "James",
+    "1 Peter",
+    "2 Peter",
+    "1 John",
+    "2 John",
+    "3 John",
+    "Jude",
+    "Revelation"
+];
+
+const deployedBookToChapterDict = {
+    "": 0,
+    "Exodus": 40,
+    "Leviticus": 27,
+    "Matthew": 28,
+    "Mark": 16,
+    "Luke": 24,
+    "John": 21,
+    "Acts": 28,
+    "Romans": 16,
+    "1 Corinthians": 16,
+    "2 Corinthians": 13,
+    "Galatians": 6,
+    "Ephesians": 6,
+    "Philippians": 4,
+    "Colossians": 4,
+    "1 Thessalonians": 5,
+    "2 Thessalonians": 3,
+    "1 Timothy": 6,
+    "2 Timothy": 4,
+    "Titus": 3,
+    "Philemon": 1,
+    "Hebrews": 13,
+    "James": 5,
+    "1 Peter": 5,
+    "2 Peter": 3,
+    "1 John": 5,
+    "2 John": 1,
+    "3 John": 1,
+    "Jude": 1,
+    "Revelation": 22
+};
+
+const allBookList = [
+    "Genesis",
+    "Exodus",
+    "Leviticus",
+    "Numbers",
     "Deuteronomy",
     "Joshua",
     "Judges",
-    */"Ruth",
-    /*"1 Samuel",
+    "Ruth",
+    "1 Samuel",
     "2 Samuel",
     "1 Kings",
     "2 Kings",
@@ -42,25 +107,25 @@ const allBookList = [
     "Psalms (prose)",
     "Psalms (metrical)",
     "Proverbs",
-    */"Ecclesiastes",
+    "Ecclesiastes",
     "Song of Songs",
-    /*"Isaiah",
+    "Isaiah",
     "Jeremiah",
-    */"Lamentations",
-    /*"Ezekiel",
+    "Lamentations",
+    "Ezekiel",
     "Daniel",
     "Hosea",
     "Joel",
     "Amos",
     "Obadiah",
-    */"Jonah",
-    //"Micah",
-    //"Nahum",
-    //"Habakkuk",
-    //"Zephaniah",
-    //"Haggai",
-    //"Zechariah",
-    //"Malachi", 
+    "Jonah",
+    "Micah",
+    "Nahum",
+    "Habakkuk",
+    "Zephaniah",
+    "Haggai",
+    "Zechariah",
+    "Malachi", 
     "Matthew",
     "Mark",
     "Luke",
@@ -237,7 +302,7 @@ const NTBookList = [
 function updateChapterDropdown(whichBook) {
     var chapterDropdown = document.getElementById("chapterSelectionDropdown");
     chapterDropdown.innerHTML = "";
-    for (var i = 1; i <= bookToChapterDict[whichBook]; i++) {
+    for (var i = 1; i <= deployedBookToChapterDict[whichBook]; i++) {
         var option = document.createElement("option");
         option.text = i;
         chapterDropdown.add(option);
@@ -245,9 +310,9 @@ function updateChapterDropdown(whichBook) {
 }
 
 var bookDropdown = document.getElementById("bookSelectionDropdown");
-for (var i = 0; i < allBookList.length; i++) {
+for (var i = 0; i < deployedBookList.length; i++) {
     var option = document.createElement("option");
-    option.text = allBookList[i];
+    option.text = deployedBookList[i];
     bookDropdown.add(option);
     updateChapterDropdown(option.text);
 }
@@ -397,7 +462,7 @@ function createNavButtons(currentChapter, isLastChapter) {
         lastChapterButton.id = "lastChapterButton";
 
         lastChapterButton.addEventListener("click", function() {
-            document.getElementById("chapterSelectionDropdown").value = bookToChapterDict[document.getElementById("bookSelectionDropdown").value];
+            document.getElementById("chapterSelectionDropdown").value = deployedBookToChapterDict[document.getElementById("bookSelectionDropdown").value];
             document.getElementById("submitBookQuery").click();
         });
     } else {
