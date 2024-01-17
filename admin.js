@@ -5,7 +5,7 @@ import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase
 
 // Add Firebase products that you want to use
 import { getAuth } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js'
-import { collection, getDocs, doc, getFirestore } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js'
+import { collection, getDocs, doc, setDoc, getFirestore } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js'
 
 const firebaseConfig = {
     apiKey: "AIzaSyB6Sl23ZOH7WHCvJHw2UKepZ6SZft_19jw",
@@ -24,6 +24,17 @@ async function getBooks() {
     const allBooks = await getDocs(myCollection);
     return allBooks;
 }
+
+async function createBook(bookName) {
+    await setDoc(doc(db, "books", bookName), {
+        name: bookName
+    });
+}
+
+document.getElementById("writeString").addEventListener("click", () => {
+    let newBook = document.getElementById("sampleString").value;
+    createBook(newBook);
+});
 
 getBooks().then((querySnap) => {
     console.log("num of docs:", querySnap.size);
