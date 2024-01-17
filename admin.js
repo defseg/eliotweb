@@ -1,16 +1,18 @@
 
-const fs = await import('fs');
+import * as fs from 'node:fs/promises';
 
-async function readFile(filePath) {
+async function readMyFile(filePath) {
   try {
     const data = await fs.readFile(filePath);
-    console.log(data.toString());
+    let whichDiv = document.getElementById("myText");
+    whichDiv.innerHTML = data;
+    console.log(data);
   } catch (error) {
     console.error(`Got an error trying to read the file: ${error.message}`);
   }
 }
 
-readFile('./texts/Exodus.First Edition.txt');
+readMyFile('./texts/Exodus.First Edition.txt');
 
 /*
 //Put this in a module
