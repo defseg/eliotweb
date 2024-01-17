@@ -1,5 +1,5 @@
 {
-  "start": "node index.js",
+  "start": "node admin.js",
   "dependencies": {
     "express.js": "^1.0.0",
     "fs": "^0.0.1-security",
