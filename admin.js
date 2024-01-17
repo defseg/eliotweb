@@ -39,10 +39,24 @@ async function bookUpdate() {
     });
 }
 
+function appendBookData(bookSnap, parentDiv) {
+    let bookData = bookSnap.data();
+    let bookName = bookData.name;
+    let bookTitle = bookData.title;
+    let bookDiv = document.createElement("div");
+    bookDiv.innerHTML = `<span style="color:red">${bookTitle}</span>/${bookName}</h3><br>`;
+    parentDiv.appendChild(bookDiv);
+}
+
 document.getElementById("writeString").addEventListener("click", () => {
     let newBook = document.getElementById("sampleString").value;
     createBook(newBook);
     bookUpdate();
+    getBooks().then((querySnap) => {
+        console.log("num of docs:", querySnap.size);
+        querySnap.docs.forEach((docSnap, index) => appendBookData(docSnap, document.getElementById("bookList")));
+    });
+    window.history.replaceState({}, '', url);
 });
 
 
