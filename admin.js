@@ -49,6 +49,7 @@ function appendBookData(bookSnap, parentDiv) {
 }
 
 document.getElementById("writeString").addEventListener("click", () => {
+    document.getElementById("bookList").innerHTML = "";
     let newBook = document.getElementById("sampleString").value;
     createBook(newBook);
     bookUpdate();
@@ -56,6 +57,7 @@ document.getElementById("writeString").addEventListener("click", () => {
         console.log("num of docs:", querySnap.size);
         querySnap.docs.forEach((docSnap, index) => appendBookData(docSnap, document.getElementById("bookList")));
     });
+    let url = new URL(window.location.href);
     window.history.replaceState({}, '', url);
 });
 
