@@ -1,3 +1,5 @@
+import {bookToChapterDict, chapterVerseDict} from './pythonscripts/chapterVerseDict.js';
+
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js'
     
 // If you enabled Analytics in your project, add the Firebase SDK for Google Analytics
@@ -25,86 +27,41 @@ async function getBooks() {
     return allBooks;
 }
 
-const bookToChapterDict = {
-    "": 0,
-    "Genesis": 50,
-    "Exodus": 40,
-    "Leviticus": 27,
-    "Numbers": 36,
-    "Deuteronomy": 34,
-    "Joshua": 24,
-    "Judges": 21,
-    "Ruth": 4,
-    "1 Samuel": 31,
-    "2 Samuel": 24,
-    "1 Kings": 22,
-    "2 Kings": 25,
-    "1 Chronicles": 29,
-    "2 Chronicles": 36,
-    "Ezra": 10,
-    "Nehemiah": 13,
-    "Esther": 10,
-    "Job": 42,
-    "Psalms (prose)": 150,
-    "Psalms (metrical)": 150,
-    "Proverbs": 31,
-    "Ecclesiastes": 12,
-    "Song of Songs": 8,
-    "Isaiah": 66,
-    "Jeremiah": 52,
-    "Lamentations": 5,
-    "Ezekiel": 48,
-    "Daniel": 12,
-    "Hosea": 14,
-    "Joel": 3,
-    "Amos": 9,
-    "Obadiah": 1,
-    "Jonah": 4,
-    "Micah": 7,
-    "Nahum": 3,
-    "Habakkuk": 3,
-    "Zephaniah": 3,
-    "Haggai": 2,
-    "Zechariah": 14,
-    "Malachi": 4,
-    "Matthew": 28,
-    "Mark": 16,
-    "Luke": 24,
-    "John": 21,
-    "Acts": 28,
-    "Romans": 16,
-    "1 Corinthians": 16,
-    "2 Corinthians": 13,
-    "Galatians": 6,
-    "Ephesians": 6,
-    "Philippians": 4,
-    "Colossians": 4,
-    "1 Thessalonians": 5,
-    "2 Thessalonians": 3,
-    "1 Timothy": 6,
-    "2 Timothy": 4,
-    "Titus": 3,
-    "Philemon": 1,
-    "Hebrews": 13,
-    "James": 5,
-    "1 Peter": 5,
-    "2 Peter": 3,
-    "1 John": 5,
-    "2 John": 1,
-    "3 John": 1,
-    "Jude": 1,
-    "Revelation": 22
-};
+async function textFilePromise(fileName) {
+    return fetch(fileName).then(response => response.text());
+}
 
-async function createBook(bookName) {
-    await setDoc(doc(db, "books", bookName), {
-        name: bookName,
-        title: bookName
-    });
-    for (let i = 1; i <= bookToChapterDict[bookName]; i++) {
-        await setDoc(doc(db, "books", bookName, "chapters", i.toString())+ {
-            name: i.toString(),
-            title: i.toString()
+async function getBookLines(book, edition) {
+    let fileName = "./texts/" + book + "." + edition + ".txt";
+    let text = await textFilePromise(fileName);
+    let lines = text.split("\n");
+    return lines;
+}
+
+function getVerseAndRawText(line) {
+    let words = line.split(" ");
+    let verseAddress = words[0];
+    let lineText = words.slice(1).join(" ").trim();
+    return [verseAddress, lineText];
+}
+
+async function createVerseDocs(bookName) {
+    let bookTextFirstEdition = await textFilePromise("./texts/" + bookName + "First Edition.txt");
+    let bookTextSecondEdition = await textFilePromise("./texts/" + bookName + "Second Edition.txt");
+    let bookTextKJV = await textFilePromise("./texts/" + bookName + "KJV.txt");
+
+    firstEditionLines = bookTextFirstEdition.split("\n");
+    secondEditionLines = bookTextSecondEdition.split("\n");
+    kjvLines = bookTextKJV.split("\n");
+
+    for (let i = 0; i < firstEditionLines.length; i++) {
+        let processedLine = getVerseAndRawText(firstEditionLines[i]);
+        let docString = "α." + bookName + (i + 1).toString();
+
+        await setDoc(doc(db, "books", bookName), {
+            name: bookName,
+            title: bookName,
+            chapters: chapters
         });
     }
 }
@@ -120,8 +77,19 @@ function appendBookData(bookSnap, parentDiv) {
     let bookData = bookSnap.data();
     let bookName = bookData.name;
     let bookTitle = bookData.title;
+    let bookChapters = bookData.chapters;
+    let chapterString = '<span style=color:blue">'
+    
+    for (let i = 0; i < bookChapters.length; i++) {
+        let chapterNum = bookChapters[i].toString();
+        chapterString += chapterNum + ", ";
+    }
+    chapterString = chapterString.slice(0, -2) + '</span>';
+    let chapterSpan = document.createElement("span");
+    chapterSpan.innerHTML = chapterString;
+
     let bookDiv = document.createElement("div");
-    bookDiv.innerHTML = `<span style="color:red">${bookTitle}</span>/${bookName}</h3><br>`;
+    bookDiv.innerHTML = `<span style="color:red">${bookTitle}</span>/${bookName}</h3><br>` + chapterString;
     parentDiv.appendChild(bookDiv);
 }
 
@@ -412,6 +380,4 @@ async function updateWordCountJSONs(book) {
     jsonWriter(noDiacriticsJSON, bookDataNoDiacritics);
 }
 
-updateWordCountJSONs("Exodus");
-
-*/
+updateWordCountJSONs("Exodus"); */
