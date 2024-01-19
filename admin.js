@@ -1,23 +1,25 @@
-const express = require('express');
-const db = require('./db-connection/db');
-const cors = require('cors');
+const pool = require('./app/db.js');
 
+const getAllWords = async () => {
+    try {
+        const result = await pool.query('SELECT * FROM words');
+        return result.rows;
+    } catch (error) {
+        console.error('Error executing query', error);
+        throw error;
+    }
+};
 
-const app = express();
-const PORT = 19054;
-app.use(cors());
-app.use(express.json())
+getAllWords().then((result) => {
+    console.log('All words:', result);
+    })
+    .catch((error) => {
+        console.error('Error executing query', error);
+    });
 
-app.get("/api/get", (req,res)=>{
-    db.query("CREATE TABLE words (word_diac VARCHAR(255), ", (err,result)=>{
-        if(err) {
-        console.log(err)
-        } 
-    res.send(result)
-    });   
-});
-    
-
+module.exports = {
+    getAllWords,
+};
 
 async function textFilePromise(fileName) {
     return fetch(fileName).then(response => response.text());
