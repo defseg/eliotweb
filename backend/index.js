@@ -10,7 +10,7 @@ const pool = new Pool({
     dbURL,
 });
 
-const wordEditor = require("./wordeditor");
+const wordEditor = require("./wordeditor.js");
 
 app.use(express.json());
 app.use(function (req, res, next) {
