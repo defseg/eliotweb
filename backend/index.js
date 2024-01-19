@@ -1,8 +1,5 @@
-
-import {getWords} from './wordeditor.js';
 const express = require("express");
 const app = express();
-
 
 app.get("/", (req, res) => {
     let words = getWords();
