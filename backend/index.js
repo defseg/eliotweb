@@ -7,7 +7,7 @@ const app = express();
 app.get("/", (req, res) => {
     let words = getWords();
     for (let i = 0; i < words.length; i++) {
-        res.send(words[i]);
+        console.log(words[i]);
     }
 });
 
