@@ -1,8 +1,14 @@
+
+import {getWords} from './wordeditor.js';
 const express = require("express");
 const app = express();
 
+
 app.get("/", (req, res) => {
-    res.send("Hello, World!");
+    let words = getWords();
+    for (let i = 0; i < words.length; i++) {
+        res.send(words[i]);
+    }
 });
 
 const PORT = process.env.PORT;
