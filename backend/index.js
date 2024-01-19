@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const { Pool } = require("pg");
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
 // The secret connection string you copied earlier
 const dbURL = process.env.DATABASE_URL;
@@ -29,7 +29,6 @@ app.get("/", (req, res) => {
     });
 });
 
-const PORT = process.env.PORT;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
