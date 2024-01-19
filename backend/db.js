@@ -1,11 +1,10 @@
 const { Pool } = require("pg");
 
 // The secret connection string you copied earlier
-const connectionString =
-  "postgresql://postgres:bGf23DCFaBcF21aDdB1A425Gf5Df3a5d@monorail.proxy.rlwy.net:21586/railway";
+const dbURL = process.env.DATABASE_URL;
 
 const pool = new Pool({
-  connectionString,
+    dbURL,
 });
 
 module.exports = pool;
