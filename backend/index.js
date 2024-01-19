@@ -2,10 +2,7 @@ const express = require("express");
 const app = express();
 
 app.get("/", (req, res) => {
-    let words = getWords();
-    for (let i = 0; i < words.length; i++) {
-        console.log(words[i]);
-    }
+    res.send("Hello World!");
 });
 
 const PORT = process.env.PORT;
