@@ -9,11 +9,3 @@ const CLIENT_PROPS = {
 }
 
 export const client = new Client(CLIENT_PROPS)
-client.connect() // async, but we don't wait; it'll happen eventually. this is bad
-// TODO wrap app init in an async fn so we can get this first
-
-;(async function () {
-    console.log('>?>?>')
-    const foo = await client.query("SELECT 1")
-    console.log('>>>>>', foo)
-})()

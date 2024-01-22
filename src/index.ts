@@ -12,11 +12,8 @@ app.get('/dynamicContent', (req, res) => {
 })
 
 app.get('/all_words', wrapAsync(async (req, res) => {
-    console.log(client)
     const words = await client.query('SELECT * FROM words_diacritics')
-    console.log('>>>', words)
     res.json(words.rows)
-    res.end()
 }))
 
 // Default error handling middleware is fine for now
@@ -24,7 +21,11 @@ app.get('/all_words', wrapAsync(async (req, res) => {
 // https://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'))
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-})
+// Async init - have to wait for the client to connect
+;(async function () {
+    await client.connect()
+    app.listen(port, () => {
+        console.log(`Example app listening on port ${port}`)
+    })    
+})()
 
