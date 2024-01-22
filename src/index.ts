@@ -21,6 +21,12 @@ app.put('/words/:word/increment', wrapAsync(async (req, res) => {
     res.json(update)
 }))
 
+app.post('/words/:word', wrapAsync(async (req, res) => {
+    // TODO: check if the word already exists and return a good error
+    const insert = await client.query("INSERT INTO words_diacritics VALUES ($1::text, 0)", [req.params.word])
+    res.json(insert)
+}))
+
 // Default error handling middleware is fine for now
 
 // https://expressjs.com/en/starter/static-files.html

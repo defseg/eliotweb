@@ -19,14 +19,15 @@ function wordToElement(word, count=0) {
         countEl.innerText = count
 
         // PUT = update existing record. search term: "HTTP verbs"
-        fetch(`/words/${word}/increment`, {method: 'PUT'}).then(res => res.text()).then(res => console.log(res))
+        // Not thinking about error handling here because this is a dummy frontend, but real things should have good error handling
+        fetch(`/words/${word}/increment`, {method: 'PUT'}).then(res => res.text()).then(res => console.log(res)).catch(err => console.log(err))
     })
     it.appendChild(buttonEl)
 
     return it
 }
 
-function launchApp(el) {
+function launchApp(el, el2) {
     el.innerText = "Loading words..."
 
     fetch("/words").then(res => res.json()).then(res => {
@@ -34,5 +35,21 @@ function launchApp(el) {
         for (let item of res) {
             el.appendChild(wordToElement(item.word, item.total_count))
         }
+
+        const newWordDiv = document.createElement('div')
+        const newWordButton = document.createElement('button')
+        newWordDiv.appendChild(newWordButton)
+        newWordButton.innerText = "Add word"
+        newWordButton.addEventListener("click", ev => {
+            const word = prompt("New word?")
+            if (word.length === 0) return
+
+            fetch(`/words/${word}`, {method: 'POST'}).then(res => res.text()).then(res => {
+                el.appendChild(wordToElement(word, 0))
+                console.log(res)
+            }).catch(err => console.error(err))
+        })
+
+        el2.appendChild(newWordButton)
     }).catch(err => console.error(err))
 }
